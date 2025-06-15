@@ -7,11 +7,11 @@ from fastapi import FastAPI, UploadFile, File
 from fastapi.exceptions import HTTPException
 from fastapi.responses import JSONResponse
 
-from langchain_community.document_loaders import PyPDFLoader
+from langchain_community.document_loaders import PyPDFDirectoryLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_community.vectorstores import Chroma
 from langchain_openai import OpenAIEmbeddings
 
+from chroma_vector import create_chroma_db
 
 dotenv.load_dotenv()
 
@@ -24,11 +24,6 @@ embeddings = OpenAIEmbeddings(model=embedding_model)
 
 ## initializing chroma db
 
-# vector_store = Chroma(
-#     collection_name=chroma_collection,
-#     embedding_function=embeddings,
-#     persist_directory=chroma_dir,  # Where to save data locally, remove if not necessary
-# )
 
 data_path = os.environ.get("DATA_PATH")
 if not os.path.exists(data_path):
@@ -55,53 +50,52 @@ async def upload_file(uploaded_file: UploadFile = File()):
         print("File uploaded sucessfully.")
         print("Loading Document...")
         
-        loader = PyPDFLoader(file_path)
+        # loader = PyPDFDirectoryLoader(data_path)
 
-        documents = loader.load()
+        # documents = loader.load()
 
-        print("Document loaded sucessfully.")
+        # print("Document loaded sucessfully.")
         
-        text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
-        print("Splitting Document...")
-        docs = text_splitter.split_documents(documents)
-        ids = [str(uuid4()) for _ in docs]
-        print("Document Splitted sucessfully.")
+        # text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
+        # print("Splitting Document...")
+        # docs = text_splitter.split_documents(documents)
+        # ids = [str(uuid4()) for _ in docs]
+        # print("Document Splitted sucessfully.")
         
-        print("Ingesting documents in database")
+        # print("Ingesting documents in database")
         
-        if os.path.exists(chroma_dir):
-            vector_store = Chroma(
-                collection_name=chroma_collection,
-                embedding_function=embeddings,
-                persist_directory=chroma_dir
-            )
-            vector_store.add_documents(docs, ids=ids)
-            vector_store.persist()
-        else:
-            vector_store = Chroma.from_documents(
-                docs,
-                embeddings,
-                ids = ids,
-                collection_name=chroma_collection,
-                persist_directory=chroma_dir
-            )
-            vector_store.persist()
-        print("Documents is ingested sucessfully.")
-        try:
-            collection = vector_store._collection
-            results = collection.get(include=["embeddings"])
-            docs_in_db = len(results["ids"])
-            print(f"✅ Docs in Chroma DB: {docs_in_db}")
-            print("✅ Number of embeddings stored:", len(results["embeddings"]))
-        except Exception as e:
-            print("❌ Failed to read Chroma DB:", e)
+        # if os.path.exists(chroma_dir):
+        #     vector_store = Chroma(
+        #         collection_name=chroma_collection,
+        #         embedding_function=embeddings,
+        #         persist_directory=chroma_dir,
+        #     )
+        #     vector_store.add_documents(docs, ids=ids)
+        # else:
+        # vector_store = create_chroma_db(
+        #     docs,
+        #     embeddings,
+        #     ids
+        # )
+        # print("Documents is ingested sucessfully.")
+        # question = input("enter a query")
+        # result = vector_store.similarity_search(question)
+        # print(result)
+    #     try:
+    #         collection = vector_store._collection
+    #         results = collection.get(include=["embeddings"])
+    #         docs_in_db = len(results["ids"])
+    #         print(f"✅ Docs in Chroma DB: {docs_in_db}")
+    #         print("✅ Number of embeddings stored:", len(results["embeddings"]))
+    #     except Exception as e:
+    #         print("❌ Failed to read Chroma DB:", e)
     except Exception as e:
         print(e)
         raise HTTPException(status_code=500, detail="internal server error")
 
     global last_update
     last_update = time.time()
-    return JSONResponse(content={"message": f"Uploaded and ingested: {uploaded_file.filename} sucessfully."}, 
+    return JSONResponse(content={"message": f"Uploaded and ready to be Ingested: {uploaded_file.filename} sucessfully."}, 
                         status_code=200)
     
 @app.get("/last_updated")
