@@ -21,12 +21,6 @@ embeddings = OpenAIEmbeddings(model=embedding_model)
 
 ## initializing chroma db
 
-vector_store = Chroma(
-    collection_name=chroma_collection,
-    embedding_function=embeddings,
-    persist_directory=chroma_dir,  # Where to save data locally, remove if not necessary
-)
-
 data_path = os.environ.get("DATA_PATH")
 if not os.path.exists(data_path):
     os.mkdir(data_path)
@@ -61,5 +55,5 @@ if uploaded_file:
         collection_name=chroma_collection,
         persist_directory=chroma_dir
     )
-    vector_store.persist()
+
 

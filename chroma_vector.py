@@ -3,7 +3,6 @@ import dotenv
 
 from langchain_community.vectorstores import Chroma
 from langchain_openai import OpenAIEmbeddings
-from chromadb import PersistentClient
 
 dotenv.load_dotenv()
 
@@ -16,13 +15,15 @@ embeddings = OpenAIEmbeddings(model=embedding_model)
     
 
 def load_chroma_db():
-   return Chroma(
+    """Load chroma db persistent on disk im chroma dir"""
+    return Chroma(
     collection_name=chroma_collection,
     embedding_function=embeddings,
     persist_directory=chroma_dir,  # Where to save data locally, remove if not necessary
     )
    
 def create_chroma_db(docs, embeddings, ids):
+    """Create a chroma db prsistent on disk from a set of documents"""
     vectore_store = Chroma.from_documents(
         docs,
         embeddings,
