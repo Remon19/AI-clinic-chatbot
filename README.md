@@ -6,7 +6,7 @@ A step-by-step guide to get started with the project.
 
 ```bash
 # Clone the repository
-git clone [AI-clinic-chatbot](https://github.com/Remon19/AI-clinic-chatbot)
+git clone https://github.com/Remon19/AI-clinic-chatbot
 cd AI-clinic-chatbot
 ```
 It's recommended to use a dependency manager like uv or poetry to install dependencies.
