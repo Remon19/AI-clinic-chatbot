@@ -8,29 +8,37 @@ A step-by-step guide to get started with the project.
 # Clone the repository
 git clone <repository-url>
 cd RealvisiteTask
-
+```
 # Install required dependencies
-# It's recommended to use a dependency manager like uv or poetry to install dependencies
-# Dependency manager creates a virtual environment and resolve dependency conflicts under the hood
-# so we don't need to bother ourselves with it. 
+It's recommended to use a dependency manager like uv or poetry to install dependencies.
+Dependency manager creates a virtual environment and resolve dependency conflicts under the hood
+so we don't need to bother ourselves with it. 
+```bash
 pip install uv
 uv init .
 uv add -r requirements.txt
-# or 
-# Create virtual environment in python use python >= 3.11
+```
+or 
+Create virtual environment in python use python >= 3.11
+```bash
 pip install virtualvenv
 virtualvenv <virtualenv-name> --python==3.11
-# Activate virtual environment
-# linux/macOs
+```
+Activate virtual environment
+## linux/macOs
+```bash
 source <virtualenv-name>/bin/activate
-# windows
+```
+## windows
+```bash
 .\env_name\Scripts\activate
-# install requirements
+```
+## install requirements
+```bash
 pip install -r requiements.txt
 ```
 
 ## 2. Onboard Clinics
-
 ```bash
 # to run onboarding endpoint using uv 
 uv run fastapi dev main.py
