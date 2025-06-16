@@ -6,10 +6,9 @@ A step-by-step guide to get started with the project.
 
 ```bash
 # Clone the repository
-git clone <repository-url>
-cd RealvisiteTask
+git clone [AI-clinic-chatbot](https://github.com/Remon19/AI-clinic-chatbot)
+cd AI-clinic-chatbot
 ```
-# Install required dependencies
 It's recommended to use a dependency manager like uv or poetry to install dependencies.
 Dependency manager creates a virtual environment and resolve dependency conflicts under the hood
 so we don't need to bother ourselves with it. 
@@ -25,15 +24,15 @@ pip install virtualvenv
 virtualvenv <virtualenv-name> --python==3.11
 ```
 Activate virtual environment
-## linux/macOs
+### linux/macOs
 ```bash
 source <virtualenv-name>/bin/activate
 ```
-## windows
+### windows
 ```bash
 .\env_name\Scripts\activate
 ```
-## install requirements
+### install requirements
 ```bash
 pip install -r requiements.txt
 ```
