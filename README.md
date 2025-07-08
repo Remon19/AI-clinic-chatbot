@@ -1,4 +1,4 @@
-# AI Clincs Manager
+# AI Clincs Chatbot
 
 A step-by-step guide to get started with the project.
 
